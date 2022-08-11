@@ -18,68 +18,6 @@ import notation as nt
 import filtering as fl
 import quantization as qa
 
-def try_until(cmd, timeout, err_handle="", err_type=0, err_opt=True, return_opt=False, log_opt=True):
-    """FONKSIYON ACIKLAMA
-
-       x (command) : denenecek islem komutu
-
-       y (int) : timeout suresi
-
-       err_handle (str) : raise value hata urettiginde ilgili hatanin bilgisi
-
-       err_type (str) : raise value hata urettiginde ilgili hatanin tipidir.
-                        0: tanimsiz hata
-                        1,2,3... : is surecinde kullanilacak durumlara gore belirlenebilir.
-
-       err_opt (bool) : hata durumundaki davranisi belirler
-                        True -> olursa raise value yaparak hata uretir
-                        False -> silence olarak devam eder
-
-       return_opt (bool) : komutun calismasi sonucunda return olan birsey varsa onu try_until returnu olarak doner
-
-       Ornek:
-                try_until("driver.find_element_by_id('nss_tarih').text", WAIT_LONG,
-                                                                         err_handle = 'tarih bilgisi okunamadi',
-                                                                         err_type = '1',
-                                                                         err_opt = True,
-                                                                         return_opt = False )
-       Ornek Aciklama:
-
-                nss tarih bilgisi okunmaya calisirken hata alinmis olursa, "tarih okunamadi" bilgisi manuel gonderilecek kisiye verilmis olur,
-                isin gonderilecegi yer (1 numarali istasyon) gonderimi yapacak robot icin belirlenmis olur. (Musteri hizmetleri)
-
-                Bu bilgiler exception'da veritabanina yazilabilir ya da farklý aksiyonlar alinabilir
-
-       """
-
-    global elm
-    cnt=0
-
-    while 0 < timeout:
-        try:
-            if return_opt:
-                elm = eval(cmd)
-                return elm
-            else:
-                exec(cmd)
-                print(cmd + "  -> ok")
-                return True
-
-        except Exception as err:
-            err1 = err
-            print(str(cnt) + " deniyor -> " + cmd)
-            cnt = cnt + 1
-            timeout = timeout - 1
-            time.sleep(1)
-
-    if err_opt:
-        # raise ValueError (x + " ---> " + str(err1) + "<->" + err_type + "<->" + err_handle)
-        raise ValueError({"msg": str(err1), "err_type": err_type, "err_handle": err_handle})
-    else:
-        if log_opt:
-            #log("try_until basarisiz: " + cmd)
-            return False
-
 songs = ["/home/ogulcan/PycharmProjects/MasterThesis/Dataset/Veri Kümesi (Wav)/Şarkılar/Almora - Kaf Dağının Ardında/kaf_daginin_ardinda.wav",
          "/home/ogulcan/PycharmProjects/MasterThesis/Dataset/Veri Kümesi (Wav)/Şarkılar/Anonim - Kürdilihicazkâr/Anonim - Kurdili Hicazkar Sirto.wav",
          "/home/ogulcan/PycharmProjects/MasterThesis/Dataset/Veri Kümesi (Wav)/Şarkılar/Apocalyptica - I Don't Care/apocalyptica_i_dont_care.wav",
